@@ -102,9 +102,10 @@
 		}else	console.assert(false)
 		scene.add(mesh)
 		currentMesh	= mesh
+		location.hash	= type
 	}
-	
-	switchValue('Earth')
+	var initialType	= location.hash.substr(1)	|| 'Earth'
+	switchValue(initialType)
 
 
 	//////////////////////////////////////////////////////////////////////////////////
