@@ -17,9 +17,9 @@ It display a nice earth with cloud and even the moon.
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/select.html).
 Display all the planets available
-* [atmospherematerial demo](http://jeromeetienne.github.io/threex.planets/examples/atmosphere.html)
+* [atmospherematerial demo](http://jeromeetienne.github.io/threex.planets/examples/atmospherematerial.html)
 and check its 
-[source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/atmosphere.html). a simple demo to show ```THREEx.createAtmosphereMaterial()```
+[source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/atmospherematerial.html). a simple demo to show ```THREEx.createAtmosphereMaterial()```
 * [basic demo](http://jeromeetienne.github.io/threex.planets/examples/basic.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/basic.html).
