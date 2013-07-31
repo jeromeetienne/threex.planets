@@ -8,23 +8,23 @@ Go check it out.
 It is released under MIT license.
 
 You can try a
-[earth demo](https://jeromeetienne.github.io/threex.planets/examples/earth.html)
+[earth demo](http://jeromeetienne.github.io/threex.planets/examples/earth.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/earth.html).
 It display a nice earth with cloud and even the moon.
 
 You can try a
-[select demo](https://jeromeetienne.github.io/threex.planets/examples/select.html)
+[select demo](http://jeromeetienne.github.io/threex.planets/examples/select.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/select.html).
 
 You can try a
-[atmospherematerial demo](https://jeromeetienne.github.io/threex.planets/examples/atmosphere.html)
+[atmospherematerial demo](http://jeromeetienne.github.io/threex.planets/examples/atmosphere.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/atmosphere.html).
 
 You can try a
-[basic demo](https://jeromeetienne.github.io/threex.planets/examples/basic.html)
+[basic demo](http://jeromeetienne.github.io/threex.planets/examples/basic.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/basic.html).
 
