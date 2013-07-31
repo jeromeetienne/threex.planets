@@ -3,7 +3,9 @@ threex.planets.js
 
 It is a three.js extension to display planets
 based on the data from [planetpixelemporium](http://planetpixelemporium.com/).
-Go check it out.
+It is a cool site, go check it out.
+It provides all the planets from the solar system.
+As a cherry on the cake, it has a 'atmosphere material'.
 It is released under MIT license.
 Here is some demos to show off
 
@@ -14,6 +16,7 @@ It display a nice earth with cloud and even the moon.
 * [select demo](http://jeromeetienne.github.io/threex.planets/examples/select.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/select.html).
+Display all the planets available
 * [atmospherematerial demo](http://jeromeetienne.github.io/threex.planets/examples/atmosphere.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/atmosphere.html). a simple demo to show ```THREEx.createAtmosphereMaterial()```
