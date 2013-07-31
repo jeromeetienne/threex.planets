@@ -4,29 +4,23 @@ threex.planets.js
 It is a three.js extension to display planets
 based on the data from [planetpixelemporium](http://planetpixelemporium.com/).
 Go check it out.
-
 It is released under MIT license.
+Here is some demos to show off
 
-You can try a
-[earth demo](http://jeromeetienne.github.io/threex.planets/examples/earth.html)
+* [earth demo](http://jeromeetienne.github.io/threex.planets/examples/earth.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/earth.html).
 It display a nice earth with cloud and even the moon.
-
-You can try a
-[select demo](http://jeromeetienne.github.io/threex.planets/examples/select.html)
+* [select demo](http://jeromeetienne.github.io/threex.planets/examples/select.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/select.html).
-
-You can try a
-[atmospherematerial demo](http://jeromeetienne.github.io/threex.planets/examples/atmosphere.html)
+* [atmospherematerial demo](http://jeromeetienne.github.io/threex.planets/examples/atmosphere.html)
 and check its 
-[source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/atmosphere.html).
-
-You can try a
-[basic demo](http://jeromeetienne.github.io/threex.planets/examples/basic.html)
+[source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/atmosphere.html). a simple demo to show ```THREEx.createAtmosphereMaterial()```
+* [basic demo](http://jeromeetienne.github.io/threex.planets/examples/basic.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/basic.html).
+Good for educational purpose
 
 ## How To install it
 
