@@ -216,9 +216,7 @@ THREEx.Planets.createSaturnRing	= function(){
 		opacity		: 0.8,
 	})
 	var mesh	= new THREE.Mesh(geometry, material)
-	mesh.rotation.x	= -2*Math.PI/3
-	mesh.rotation.y	= -Math.PI/3
-	// mesh.rotation.z	= Math.PI/4
+	mesh.lookAt(new THREE.Vector3(0.5,-4,1))
 	return mesh	
 }
 
@@ -291,9 +289,7 @@ THREEx.Planets.createUranusRing	= function(){
 		opacity		: 0.8,
 	})
 	var mesh	= new THREE.Mesh(geometry, material)
-	mesh.rotation.x	= -2*Math.PI/3
-	mesh.rotation.y	= -Math.PI/3
-	// mesh.rotation.z	= Math.PI/4
+	mesh.lookAt(new THREE.Vector3(0.5,-4,1))
 	return mesh	
 }
 

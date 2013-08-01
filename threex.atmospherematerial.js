@@ -10,8 +10,7 @@ THREEx.createAtmosphereMaterial	= function(){
 		'uniform float coeficient;',
 		'uniform float power;',
 		'varying float intensity;',
-		'void main() ',
-		'{',
+		'void main(){',
 		'	// compute intensity',
 		'	vec3 vNormal	= normalize( normalMatrix * normal );',
 		'	vec3 vNormel	= normalize( normalMatrix * viewVector );',
@@ -23,8 +22,7 @@ THREEx.createAtmosphereMaterial	= function(){
 	var fragmentShader	= [
 		'uniform vec3 glowColor;',
 		'varying float intensity;',
-		'void main() ',
-		'{',
+		'void main(){',
 		'	vec3 glow	= glowColor * intensity;',
 		'	gl_FragColor	= vec4( glow, 1.0 );',
 		'}',
@@ -45,11 +43,11 @@ THREEx.createAtmosphereMaterial	= function(){
 			},
 			glowColor	: {
 				type	: "c",
-				value	: new THREE.Color('blue')
+				value	: new THREE.Color('white')
 			},
 			viewVector	: {
 				type	: "v3",
-				value	: camera.position
+				value	: new THREE.Vector3(0,0,1)
 			}
 		},
 		vertexShader	: vertexShader,

@@ -2,6 +2,10 @@
 <script src='vendor/three.js/build/three.min.js'></script>
 <script src='../threex.planets.js'></script>
 <script src='../threex.atmospherematerial.js'></script>
+<!-- include for threex.glowdatgui -->
+<script src='vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
+<script src="../threex.atmospheredatgui.js"></script>
+
 <body style='margin: 0px; background-color: #000000; overflow: hidden;'><script>
 	var renderer	= new THREE.WebGLRenderer({
 		antialias	: true
@@ -13,7 +17,7 @@
 	var updateFcts	= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
-	camera.position.z = 1.5;
+	camera.position.z = 2;
 
 	var light	= new THREE.AmbientLight( 0x888888 )
 	scene.add( light )
@@ -45,15 +49,35 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		add an object and make it move					//
 	//////////////////////////////////////////////////////////////////////////////////
-	
-	var moonMesh	= THREEx.Planets.createMoon()
-	scene.add(moonMesh)
+
+	var datGUI	= new dat.GUI()
+	var glowColor	= new THREE.Color('cyan')
+	var mesh	= THREEx.Planets.createEarth()
+	// var mesh	= THREEx.Planets.createMoon()
+	// var mesh	= THREEx.Planets.createSun()
+	// mesh.visible	= false
+	scene.add(mesh)
 
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
 	var material	= THREEx.createAtmosphereMaterial()
+	material.uniforms.glowColor.value	= glowColor
 	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.3);
+	mesh.scale.multiplyScalar(1.01);
 	scene.add( mesh );
+
+	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
+
+	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	var material	= THREEx.createAtmosphereMaterial()
+	material.side	= THREE.BackSide
+	material.uniforms.coeficient.value	= 0.5
+	material.uniforms.power.value		= 4.0
+	material.uniforms.glowColor.value	= glowColor
+	var mesh	= new THREE.Mesh(geometry, material );
+	mesh.scale.multiplyScalar(1.2);
+	scene.add( mesh );
+
+	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Camera Controls							//
@@ -64,9 +88,9 @@
 		mouse.y	= (event.clientY / window.innerHeight) - 0.5
 	}, false)
 	updateFcts.push(function(delta, now){
-		camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
-		camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
-		camera.lookAt( scene.position )
+		// camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
+		// camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
+		// camera.lookAt( scene.position )
 	})
 
 
