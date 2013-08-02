@@ -52,22 +52,25 @@
 
 	var datGUI	= new dat.GUI()
 	var glowColor	= new THREE.Color('cyan')
+	var glowColor	= new THREE.Color('yellow')
 	var mesh	= THREEx.Planets.createEarth()
 	// var mesh	= THREEx.Planets.createMoon()
-	// var mesh	= THREEx.Planets.createSun()
+	var mesh	= THREEx.Planets.createSun()
 	// mesh.visible	= false
 	scene.add(mesh)
 
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	geometry	= mesh.geometry.clone()
 	var material	= THREEx.createAtmosphereMaterial()
 	material.uniforms.glowColor.value	= glowColor
 	var mesh	= new THREE.Mesh(geometry, material );
 	mesh.scale.multiplyScalar(1.01);
 	scene.add( mesh );
 
-	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
+	// new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	geometry	= mesh.geometry.clone()
 	var material	= THREEx.createAtmosphereMaterial()
 	material.side	= THREE.BackSide
 	material.uniforms.coeficient.value	= 0.5
@@ -88,9 +91,9 @@
 		mouse.y	= (event.clientY / window.innerHeight) - 0.5
 	}, false)
 	updateFcts.push(function(delta, now){
-		// camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
-		// camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
-		// camera.lookAt( scene.position )
+		camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
+		camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
+		camera.lookAt( scene.position )
 	})
 
 

@@ -6,33 +6,31 @@ var THREEx = THREEx || {}
  */
 THREEx.createAtmosphereMaterial	= function(){
 	var vertexShader	= [
-		'uniform vec3  viewVector;',
-		'uniform float coeficient;',
-		'uniform float power;',
-		'varying float intensity;',
+		'varying vec3 vNormal;',
 		'void main(){',
 		'	// compute intensity',
-		'	vec3 vNormal	= normalize( normalMatrix * normal );',
-		'	vec3 vNormel	= normalize( normalMatrix * viewVector );',
-		'	intensity	= pow( coeficient - dot(vNormal, vNormel), power );',
+		'	vNormal		= normalize( normalMatrix * normal );',
 		'	// set gl_Position',
 		'	gl_Position	= projectionMatrix * modelViewMatrix * vec4( position, 1.0 );',
 		'}',
 	].join('\n')
 	var fragmentShader	= [
-		'uniform vec3 glowColor;',
-		'varying float intensity;',
+		'uniform float coeficient;',
+		'uniform float power;',
+		'uniform vec3  glowColor;',
+
+		'varying vec3  vNormal;',
+
 		'void main(){',
-		'	vec3 glow	= glowColor * intensity;',
-		'	gl_FragColor	= vec4( glow, 1.0 );',
+		'	float intensity	= pow( coeficient - dot(vNormal, vec3(0.0, 0.0, 1.0)), power );',
+		'	gl_FragColor	= vec4( glowColor * intensity, 1.0 );',
 		'}',
 	].join('\n')
-
 
 	// create custom material from the shader code above
 	//   that is within specially labeled script tags
 	var material	= new THREE.ShaderMaterial({
-		uniforms: { 	
+		uniforms: { 
 			coeficient	: {
 				type	: "f", 
 				value	: 1.0
@@ -43,12 +41,8 @@ THREEx.createAtmosphereMaterial	= function(){
 			},
 			glowColor	: {
 				type	: "c",
-				value	: new THREE.Color('white')
+				value	: new THREE.Color('pink')
 			},
-			viewVector	: {
-				type	: "v3",
-				value	: new THREE.Vector3(0,0,1)
-			}
 		},
 		vertexShader	: vertexShader,
 		fragmentShader	: fragmentShader,

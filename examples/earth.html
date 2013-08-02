@@ -16,7 +16,7 @@
 	var updateFcts	= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
-	camera.position.z = 2;
+	camera.position.z = 1;
 
 	var light	= new THREE.AmbientLight( 0x222222 )
 	scene.add( light )
@@ -80,7 +80,6 @@
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
 	var material	= THREEx.createAtmosphereMaterial()
 	material.uniforms.glowColor.value.set(0x00b3ff)
-	material.uniforms.viewVector.value	= camera.position
 	material.uniforms.coeficient.value	= 0.8
 	material.uniforms.power.value		= 2.0
 	var mesh	= new THREE.Mesh(geometry, material );
@@ -91,12 +90,11 @@
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
 	var material	= THREEx.createAtmosphereMaterial()
 	material.side	= THREE.BackSide
-	material.uniforms.viewVector.value	= camera.position
 	material.uniforms.glowColor.value.set(0x00b3ff)
 	material.uniforms.coeficient.value	= 0.5
 	material.uniforms.power.value		= 4.0
 	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.1);
+	mesh.scale.multiplyScalar(1.15);
 	containerEarth.add( mesh );
 	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
