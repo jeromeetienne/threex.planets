@@ -57,7 +57,7 @@
 	//		add an object and make it move					//
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var datGUI	= new dat.GUI()
+	// var datGUI	= new dat.GUI()
 
 	var containerEarth	= new THREE.Object3D()
 	containerEarth.rotateZ(-23.4 * Math.PI/180)
@@ -85,7 +85,7 @@
 	var mesh	= new THREE.Mesh(geometry, material );
 	mesh.scale.multiplyScalar(1.01);
 	containerEarth.add( mesh );
-	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
+	// new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
 	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
 	var material	= THREEx.createAtmosphereMaterial()
@@ -96,7 +96,7 @@
 	var mesh	= new THREE.Mesh(geometry, material );
 	mesh.scale.multiplyScalar(1.15);
 	containerEarth.add( mesh );
-	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
+	// new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
 	var earthCloud	= THREEx.Planets.createEarthCloud()
 	earthCloud.receiveShadow	= true

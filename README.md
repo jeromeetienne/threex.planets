@@ -1,4 +1,4 @@
-threex.planets.js
+threex.planets.js 
 =================
 
 It is a three.js extension to display planets
