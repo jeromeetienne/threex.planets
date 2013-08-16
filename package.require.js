@@ -4,5 +4,5 @@ define( [ 'module'
 	, './threex.atmospheredatgui'
 	], function(module){
 	// set baseUrl for this plugin
-	THREEx.Planets.baseUrl	= module.uri+'/../';
+	THREEx.Planets.baseURL	= module.uri+'/../';
 });

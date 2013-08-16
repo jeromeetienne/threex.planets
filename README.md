@@ -2,7 +2,7 @@ threex.planets.js
 =================
 
 It is a three.js extension to display planets
-based on the data from [planetpixelemporium](http://planetpixelemporium.com/).
+based on the data from [planetpixelemporium](http://planetpixelemporium.com/planets.html).
 It is a cool site, go check it out.
 It provides all the planets from the solar system.
 As a cherry on the cake, it has a 'atmosphere material'.
