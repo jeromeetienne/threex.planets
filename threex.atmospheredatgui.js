@@ -4,6 +4,12 @@
  */
 var THREEx	= THREEx || {};
 
+/**
+ * add a THREEx.AtmosphereMaterial to Dat.DUI
+ * 
+ * @param  {THREE.ShaderMaterial}	material	the material to handle
+ * @param  {dat.GUI+}			datGui		the dat.GUI to which we need to add
+ */
 THREEx.addAtmosphereMaterial2DatGui	= function(material, datGui){
 	datGui		= datGui || new dat.GUI()
 	var uniforms	= material.uniforms
