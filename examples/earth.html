@@ -13,7 +13,7 @@
 	document.body.appendChild( renderer.domElement );
 	renderer.shadowMapEnabled	= true
 	
-	var updateFcts	= [];
+	var onRenderFcts= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
 	camera.position.z = 1;
@@ -74,7 +74,7 @@
 	earthMesh.receiveShadow	= true
 	earthMesh.castShadow	= true
 	containerEarth.add(earthMesh)
-	updateFcts.push(function(delta, now){
+	onRenderFcts.push(function(delta, now){
 		earthMesh.rotation.y += 1/32 * delta;		
 	})
 
@@ -103,7 +103,7 @@
 	earthCloud.receiveShadow	= true
 	earthCloud.castShadow	= true
 	containerEarth.add(earthCloud)
-	updateFcts.push(function(delta, now){
+	onRenderFcts.push(function(delta, now){
 		earthCloud.rotation.y += 1/8 * delta;		
 	})
 
@@ -115,7 +115,7 @@
 		mouse.x	= (event.clientX / window.innerWidth ) - 0.5
 		mouse.y	= (event.clientY / window.innerHeight) - 0.5
 	}, false)
-	updateFcts.push(function(delta, now){
+	onRenderFcts.push(function(delta, now){
 		camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
 		camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
 		camera.lookAt( scene.position )
@@ -125,7 +125,7 @@
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the scene						//
 	//////////////////////////////////////////////////////////////////////////////////
-	updateFcts.push(function(){
+	onRenderFcts.push(function(){
 		renderer.render( scene, camera );		
 	})
 	
@@ -141,8 +141,8 @@
 		var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
 		lastTimeMsec	= nowMsec
 		// call each update function
-		updateFcts.forEach(function(updateFn){
-			updateFn(deltaMsec/1000, nowMsec/1000)
+		onRenderFcts.forEach(function(onRenderFct){
+			onRenderFct(deltaMsec/1000, nowMsec/1000)
 		})
 	})
 </script></body>

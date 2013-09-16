@@ -2,17 +2,17 @@
 <script src='vendor/three.js/build/three.min.js'></script>
 <script src='../threex.planets.js'></script>
 <div style='position:absolute'>
-	<button onclick='switchValue(this.innerText);'>Sun</button>
-	<button onclick='switchValue(this.innerText);'>Mercury</button>
-	<button onclick='switchValue(this.innerText);'>Venus</button>
-	<button onclick='switchValue(this.innerText);'>Earth</button>
-	<button onclick='switchValue(this.innerText);'>Moon</button>
-	<button onclick='switchValue(this.innerText);'>Mars</button>
-	<button onclick='switchValue(this.innerText);'>Jupiter</button>
-	<button onclick='switchValue(this.innerText);'>Saturn</button>
-	<button onclick='switchValue(this.innerText);'>Uranus</button>
-	<button onclick='switchValue(this.innerText);'>Neptune</button>
-	<button onclick='switchValue(this.innerText);'>Pluto</button>
+	<button onclick='switchValue(this.innerHTML);'>Sun</button>
+	<button onclick='switchValue(this.innerHTML);'>Mercury</button>
+	<button onclick='switchValue(this.innerHTML);'>Venus</button>
+	<button onclick='switchValue(this.innerHTML);'>Earth</button>
+	<button onclick='switchValue(this.innerHTML);'>Moon</button>
+	<button onclick='switchValue(this.innerHTML);'>Mars</button>
+	<button onclick='switchValue(this.innerHTML);'>Jupiter</button>
+	<button onclick='switchValue(this.innerHTML);'>Saturn</button>
+	<button onclick='switchValue(this.innerHTML);'>Uranus</button>
+	<button onclick='switchValue(this.innerHTML);'>Neptune</button>
+	<button onclick='switchValue(this.innerHTML);'>Pluto</button>
 </div>
 <body style='margin: 0px; background-color: #000000; overflow: hidden;'><script>
 	var renderer	= new THREE.WebGLRenderer({
@@ -25,7 +25,7 @@
 	var updateFcts	= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
-	camera.position.z = 2;
+	camera.position.z = 1.5;
 
 	var light	= new THREE.AmbientLight( 0x888888 )
 	scene.add( light )
