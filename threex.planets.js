@@ -355,19 +355,34 @@ THREEx.Planets._RingGeometry = function ( innerRadius, outerRadius, thetaSegment
 		
 
 		var vertexIdx	= i * 4;
-		var face	= new THREE.Face4( vertexIdx+0, vertexIdx+1, vertexIdx+3, vertexIdx+2, [ normal, normal, normal, normal ] );
-		this.faces.push( face );
 
-		var uvs	= []
-		var uv	= new THREE.Vector2(1, 0)
+		// Create the first triangle
+		var face = new THREE.Face3(vertexIdx + 0, vertexIdx + 1, vertexIdx + 2, normal);
+		var uvs = []
+
+		var uv = new THREE.Vector2(0, 0)
 		uvs.push(uv)
-		var uv	= new THREE.Vector2(0, 0)
+		var uv = new THREE.Vector2(1, 0)
 		uvs.push(uv)
-		var uv	= new THREE.Vector2(0, 0)
+		var uv = new THREE.Vector2(0, 1)
 		uvs.push(uv)
-		var uv	= new THREE.Vector2(1, 0)
+
+		this.faces.push(face);
+		this.faceVertexUvs[0].push(uvs);
+
+		// Create the second triangle
+		var face = new THREE.Face3(vertexIdx + 2, vertexIdx + 1, vertexIdx + 3, normal);
+		var uvs = []
+
+		var uv = new THREE.Vector2(0, 1)
 		uvs.push(uv)
-		this.faceVertexUvs[ 0 ].push( uvs );
+		var uv = new THREE.Vector2(1, 0)
+		uvs.push(uv)
+		var uv = new THREE.Vector2(1, 1)
+		uvs.push(uv)
+
+		this.faces.push(face);
+		this.faceVertexUvs[0].push(uvs);
 	}
 
 	this.computeCentroids();
