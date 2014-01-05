@@ -77,7 +77,7 @@ updateFcts.push(function(delta, now){
 
 Here is the list of all the functions.
 They all return a ```THREE.Object3d```. 
-You can tune it to fit your need
+You can tune it to fit your need 
 
 * ```THREEx.Planets.createSun()``` return the mesh of the Sun
 * ```THREEx.Planets.createMercury()``` return the mesh of Mercury
