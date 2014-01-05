@@ -93,5 +93,6 @@ You can tune it to fit your need
 * ```THREEx.Planets.createUranusRing()``` return the mesh of Uranus's ring
 * ```THREEx.Planets.createNeptune()``` return the mesh of Neptune
 * ```THREEx.Planets.createPluto()``` return the mesh of Pluto
+* ```THREEx.Planets.createStarfield()``` return the mesh of a starfield environmental sphere
 	
 	
