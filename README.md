@@ -2,7 +2,15 @@ threex.planets.js
 =================
 
 It is a three.js extension to display planets
-based on the data from [planetpixelemporium](http://planetpixelemporium.com/planets.html).
+based on the data from  
+* [planetpixelemporium](http://planetpixelemporium.com/planets.html) (Sun*, Earth, Saturn Rings*, Uranus)  
+* [USGS](http://astrogeology.usgs.gov/solar-system) (Mercury DEM, Moon*, Mars)
+* [NASA/JHUAPL/Carnegie Institution of Washington](http://messenger.jhuapl.edu/Explore/Images.html#global-mosaics) (Mercury Map*)
+* [NASA/JHUAPL/SWRI](http://pluto.jhuapl.edu/Multimedia/Science-Photos/image.php?gallery_id=2&image_id=252) (Pluto*)
+* [Björn Jónsson](http://bjj.mmedia.is/data/planetary_maps.html) (Venus*, Saturn, Neptune)
+* [GSFC](http://svs.gsfc.nasa.gov/cgi-bin/details.cgi?aid=12021) (Jupiter)
+\* Hand adapted by ofrohn, also Jupiter & Neptune ring maps
+
 It is a cool site, go check it out.
 It provides all the planets from the solar system.
 As a cherry on the cake, it has a 'atmosphere material'.

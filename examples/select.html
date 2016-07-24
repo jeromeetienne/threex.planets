@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<script src='vendor/three.js/build/three.min.js'></script>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta charset="utf-8">
+<script src='vendor/three.js/build/three.js'></script>
 <script src='../threex.planets.js'></script>
 <div style='position:absolute'>
 	<button onclick='switchValue(this.innerHTML);'>Sun</button>
@@ -22,37 +23,38 @@
 	document.body.appendChild( renderer.domElement );
 	renderer.shadowMapEnabled	= true
 	
-	var updateFcts	= [];
+  // array of functions for the rendering loop
+  var onRenderFcts= [];
 	var scene	= new THREE.Scene();
 	var camera	= new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 100 );
-	camera.position.z = 1.5;
+	camera.position.z = 1.7;
 
 	var light	= new THREE.AmbientLight( 0x888888 )
-	scene.add( light )
+	scene.add( light );
 	// var light	= new THREE.DirectionalLight( 'white', 1)
 	// light.position.set(5,5,5)
 	// light.target.position.set( 0, 0, 0 )
 	// scene.add( light )
 
-	var light	= new THREE.DirectionalLight( 0xcccccc, 1 )
-	light.position.set(5,5,5)
-	scene.add( light )
-	light.castShadow	= true
-	light.shadowCameraNear	= 0.01
-	light.shadowCameraFar	= 15
-	light.shadowCameraFov	= 45
+	var light	= new THREE.DirectionalLight( 0xcccccc, 1 );
+	light.position.set(5,5,5);
+	scene.add( light );
+	light.castShadow	= true;
+	light.shadowCameraNear	= 0.01;
+	light.shadowCameraFar	= 15;
+	light.shadowCameraFov	= 45;
 
-	light.shadowCameraLeft	= -1
-	light.shadowCameraRight	=  1
-	light.shadowCameraTop	=  1
-	light.shadowCameraBottom= -1
+	light.shadowCameraLeft	= -1;
+	light.shadowCameraRight	=  1;
+	light.shadowCameraTop	=  1;
+	light.shadowCameraBottom= -1;
 	// light.shadowCameraVisible	= true
 
-	light.shadowBias	= 0.001
-	light.shadowDarkness	= 0.2
+	light.shadowBias	= 0.001;
+	light.shadowDarkness	= 0.2;
 
-	light.shadowMapWidth	= 1024*2
-	light.shadowMapHeight	= 1024*2
+	light.shadowMapWidth	= 1024*2;
+	light.shadowMapHeight	= 1024*2;
 
 	
 	//////////////////////////////////////////////////////////////////////////////////
@@ -125,13 +127,41 @@
 		mouse.x	= (event.clientX / window.innerWidth ) - 0.5
 		mouse.y	= (event.clientY / window.innerHeight) - 0.5
 	}, false)
-	updateFcts.push(function(delta, now){
+	onRenderFcts.push(function(delta, now){
 		camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
 		camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
 		camera.lookAt( scene.position )
 	})
+    
+  // handle window resize
+  window.addEventListener('resize', function(){
+    renderer.setSize( window.innerWidth, window.innerHeight )
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()  
+  }, false);
 
+  // render the scene
+  onRenderFcts.push(function(){
+    renderer.render(scene, camera);  
+  });
+ 
+  // run the rendering loop
+  var lastTimeMsec= null;
+  requestAnimationFrame(function animate(nowMsec) {
+    // keep looping
+    requestAnimationFrame(animate);
+    // measure time
+    lastTimeMsec = lastTimeMsec || nowMsec-1000/60;
+    var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+    lastTimeMsec = nowMsec;
+    // call each update function
+    onRenderFcts.forEach(function(onRenderFct) {
+      onRenderFct(deltaMsec/1000, nowMsec/1000);
+    })
+  })
 
+  
+/*
 	//////////////////////////////////////////////////////////////////////////////////
 	//		render the scene						//
 	//////////////////////////////////////////////////////////////////////////////////
@@ -154,5 +184,5 @@
 		updateFcts.forEach(function(updateFn){
 			updateFn(deltaMsec/1000, nowMsec/1000)
 		})
-	})
+	})*/
 </script></body>

@@ -73,24 +73,24 @@
 		earthMesh.rotation.y += 1/32 * delta;		
 	})
 
-	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	var geometry	= new THREE.SphereGeometry(THREEx.Planets.params.earth.radius, 32, 32)
 	var material	= THREEx.createAtmosphereMaterial()
 	material.uniforms.glowColor.value.set(0x00b3ff)
 	material.uniforms.coeficient.value	= 0.8
 	material.uniforms.power.value		= 2.0
 	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.01);
+	mesh.scale.multiplyScalar(1.005);
 	containerEarth.add( mesh );
 	// new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
-	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	var geometry	= new THREE.SphereGeometry(THREEx.Planets.params.earth.radius, 32, 32)
 	var material	= THREEx.createAtmosphereMaterial()
 	material.side	= THREE.BackSide
 	material.uniforms.glowColor.value.set(0x00b3ff)
 	material.uniforms.coeficient.value	= 0.5
 	material.uniforms.power.value		= 4.0
 	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.15);
+	mesh.scale.multiplyScalar(1.05);
 	containerEarth.add( mesh );
 	// new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 

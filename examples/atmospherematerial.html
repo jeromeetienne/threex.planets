@@ -59,17 +59,17 @@
 	// mesh.visible	= false
 	scene.add(mesh)
 
-	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	var geometry	= new THREE.SphereGeometry(THREEx.Planets.params.sun.radius, 32, 32)
 	geometry	= mesh.geometry.clone()
 	var material	= THREEx.createAtmosphereMaterial()
 	material.uniforms.glowColor.value	= glowColor
 	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.01);
+	mesh.scale.multiplyScalar(1.005);
 	scene.add( mesh );
 
 	// new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
 
-	var geometry	= new THREE.SphereGeometry(0.5, 32, 32)
+	var geometry	= new THREE.SphereGeometry(THREEx.Planets.params.sun.radius, 32, 32)
 	geometry	= mesh.geometry.clone()
 	var material	= THREEx.createAtmosphereMaterial()
 	material.side	= THREE.BackSide
@@ -77,7 +77,7 @@
 	material.uniforms.power.value		= 4.0
 	material.uniforms.glowColor.value	= glowColor
 	var mesh	= new THREE.Mesh(geometry, material );
-	mesh.scale.multiplyScalar(1.2);
+	mesh.scale.multiplyScalar(1.1);
 	scene.add( mesh );
 
 	new THREEx.addAtmosphereMaterial2DatGui(material, datGUI)
