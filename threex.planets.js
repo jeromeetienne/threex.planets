@@ -10,6 +10,7 @@ THREEx.Planets.params = {
   // texture map, bump map, cloud map, arbitrary radius, axis tilt in degrees, rotation period in days
   // ring: texture map, outer radius rel. to planet, opacity
   "sol": {map: "sunmap.jpg", radius: 1.2, tilt: 7.25, rot: 1.0438},
+          corona: {map: "solarcorona.jpg", radius:5.1} },
   "mer": {map: "mercurymap.jpg", bump:"mercurybump.jpg", radius: 0.3, tilt: 0, rot: 58.646},
   "ven": {map: "venusmap.jpg", radius: 0.4, tilt: 177.3, rot: 4.05},
   "ter": {map: "earthmap.jpg", bump:"earthbump.jpg", clouds:"earthclouds.png", radius: 0.4, tilt: 23.45, rot: 0.9973},
@@ -18,13 +19,13 @@ THREEx.Planets.params = {
   "ves": {map: "vestamap.jpg", bump: "vestabump.jpg", radius: 0.1, tilt: 29.0, rot: 0.223},
   "cer": {map: "ceresmap.jpg", radius: 0.16, tilt: 4.0, rot: 0.378},
   "jup": {map: "jupitermap.jpg", radius: 1.2, tilt: 3.12, rot: 0.414,
-             ring: {map: "jupiterrings.png", radius: 2.7, opacity: 0.5} },
+          ring: {map: "jupiterrings.png", radius: 2.7, opacity: 0.5} },
   "sat": {map: "saturnmap.jpg", radius: 1.2, tilt: 26.73, rot: 0.444, 
-             ring: {map: "saturnrings.png", radius: 2.6, opacity: 1.0} },
+          ring: {map: "saturnrings.png", radius: 2.6, opacity: 1.0} },
   "ura": {map: "uranusmap.jpg", radius: 1.0, tilt: 97.86, rot: 0.718, 
-             ring: {map: "uranusrings.png", radius: 2.0, opacity: 0.5} },
+          ring: {map: "uranusrings.png", radius: 2.0, opacity: 0.5} },
   "nep": {map: "neptunemap.jpg", radius: 1.0, tilt: 29.56, rot: 0.671, 
-             ring: {map: "neptunerings.png", radius: 2.5, opacity: 0.8} },
+          ring: {map: "neptunerings.png", radius: 2.5, opacity: 0.8} },
   "plu": {map: "plutomap.jpg", radius: 0.2, tilt: 122.53, rot: 6.387}  
 };
 
@@ -140,14 +141,16 @@ THREEx.Planets.createClouds = function(body) {
 
 // Solar corona, based on Lee Stemkoski's https://github.com/stemkoski/stemkoski.github.com/blob/master/Three.js/Simple-Glow.html
 THREEx.Planets.createCorona = function() {
+  var p = THREEx.Planets.params.sol, map = THREEx.Planets.baseURL + p.corona.map;
+
   var material = new THREE.SpriteMaterial({ 
-    map: new THREE.TextureLoader().load(THREEx.Planets.baseURL + "solarcorona.jpg"), 
+    map: new THREE.TextureLoader().load(map), 
     color: 0xffff33, 
     transparent: false, 
     blending: THREE.AdditiveBlending
 	});
 	var mesh = new THREE.Sprite(material);
-	mesh.scale.multiplyScalar(4.8);
+	mesh.scale.multiplyScalar(p.corona.radius);
 	mesh.name = "solcorona";
   return mesh;
 };
