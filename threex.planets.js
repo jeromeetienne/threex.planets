@@ -9,7 +9,7 @@ THREEx.Planets.baseURL = "../images/";
 THREEx.Planets.params = {
   // texture map, bump map, cloud map, arbitrary radius, axis tilt in degrees, rotation period in days
   // ring: texture map, outer radius rel. to planet, opacity
-  "sol": {map: "sunmap.jpg", radius: 1.2, tilt: 7.25, rot: 1.0438},
+  "sol": {map: "sunmap.jpg", radius: 1.2, tilt: 7.25, rot: 1.0438,
           corona: {map: "solarcorona.jpg", radius:5.1} },
   "mer": {map: "mercurymap.jpg", bump:"mercurybump.jpg", radius: 0.3, tilt: 0, rot: 58.646},
   "ven": {map: "venusmap.jpg", radius: 0.4, tilt: 177.3, rot: 4.05},
