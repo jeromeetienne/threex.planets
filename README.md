@@ -20,7 +20,7 @@ Here is some demos to show off
 
 * [all the planets](http://ofrohn.github.io/planets-viewer.html)
 and its 
-[source](https://github.com/ofrohn/threex.planets/blob/master/examples/planets-viewer.html). All the implemented objects dancing in a circle.
+[source](https://github.com/ofrohn/threex.planets/blob/master/examples/planets-viewer.html). All the implemented objects dancing in a circle.  
 _Older examples_  
 * [earth demo](http://jeromeetienne.github.io/threex.planets/examples/earth.html)
 and check its 
