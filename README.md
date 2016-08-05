@@ -20,11 +20,11 @@ Here is some demos to show off
 
 * [all the planets](http://ofrohn.github.io/planets-viewer.html)
 and its 
-[source](https://github.com/ofrohn/threex.planets/blob/master/examples/planets-viewer.html).
+[source](https://github.com/ofrohn/threex.planets/blob/master/examples/planets-viewer.html). All the implemented objects dancing in a circle.
 * [earth demo](http://jeromeetienne.github.io/threex.planets/examples/earth.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/earth.html).
-It display a nice earth with cloud and even the moon.
+It displays a nice earth with cloud and even the moon.
 * [select demo](http://jeromeetienne.github.io/threex.planets/examples/select.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/select.html).
