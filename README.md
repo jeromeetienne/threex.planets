@@ -18,6 +18,9 @@ based on the data from
 
 Here is some demos to show off
 
+* [all the planets](http://ofrohn.github.io/planets-viewer.html)
+and its 
+[source](https://github.com/ofrohn/threex.planets/blob/master/examples/planets-viewer.html).
 * [earth demo](http://jeromeetienne.github.io/threex.planets/examples/earth.html)
 and check its 
 [source](https://github.com/jeromeetienne/threex.planets/blob/master/examples/earth.html).
