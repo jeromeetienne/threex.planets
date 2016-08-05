@@ -30,6 +30,23 @@ THREEx.Planets.params = {
 };
 
 
+// Friendly names 
+var substitutes = {
+  "Sun": "sol",
+  "Mercury": "mer",
+  "Venus": "ven",
+  "Earth": "ter",
+  "Moon": "lun",
+  "Mars": "mar",
+  "Vesta": "ves",
+  "Ceres": "cer",
+  "Jupiter": "jup",
+  "Saturn": "sat",
+  "Uranus": "ura",
+  "Neptune": "nep",
+  "Pluto": "plu",
+};
+
 THREEx.Planets.createSun = function() { return THREEx.Planets.create("sun"); };
 THREEx.Planets.createMercury = function() { return THREEx.Planets.create("mercury"); };
 THREEx.Planets.createVenus = function() { return THREEx.Planets.create("venus"); };
@@ -61,8 +78,11 @@ THREEx.Planets.createStarfield = function() {
 // Create body, skipextras true -> don't create cloud, ring etc.
 THREEx.Planets.create = function(body, skipextras) {
   if (!THREEx.Planets.params.hasOwnProperty(body)) {
-    console.log("Object not found: " + body);
-    return null;
+    if (substitutes.hasOwnProperty(body)) body = substitutes[body];
+    else {
+      console.log("Object not found: " + body);
+      return null;
+    }
   }
   var p = THREEx.Planets.params[body], arg = {};
   var loader = new THREE.TextureLoader();
@@ -107,10 +127,21 @@ THREEx.Planets.create = function(body, skipextras) {
   
 // Planetary rings 
 THREEx.Planets.createRings = function(body) {
+  if (!THREEx.Planets.params.hasOwnProperty(body)) {
+    if (substitutes.hasOwnProperty(body)) body = substitutes[body];
+    else {
+      console.log("Object not found: " + body);
+      return null;
+    }
+  }
+  if (!THREEx.Planets.params[body].hasOwnProperty("ring")) {
+    console.log("Rings not found: " + body);
+    return null;
+  }
   var p = THREEx.Planets.params[body], map = THREEx.Planets.baseURL + p.ring.map,
       loader = new THREE.TextureLoader();
   
-  var geometry = new THREEx.Planets.RingGeometry(p.radius + 0.05, p.ring.radius, 64, 64);
+  var geometry = new THREEx.Planets.RingGeometry(p.radius * 1.05, p.ring.radius, 64, 64);
   var material = new THREE.MeshPhongMaterial({
     map: loader.load(map),
     side: THREE.DoubleSide,
@@ -125,11 +156,22 @@ THREEx.Planets.createRings = function(body) {
 
 // Cloud layer from transparent png, see http://blog.thematicmapping.org/2013/09/creating-webgl-earth-with-threejs.html
 THREEx.Planets.createClouds = function(body) {
+  if (!THREEx.Planets.params.hasOwnProperty(body)) {
+    if (substitutes.hasOwnProperty(body)) body = substitutes[body];
+    else {
+      console.log("Object not found: " + body);
+      return null;
+    }
+  }
+  if (!THREEx.Planets.params[body].hasOwnProperty("clouds")) {
+    console.log("Clouds not found: " + body);
+    return null;
+  }
   var p = THREEx.Planets.params[body], map = THREEx.Planets.baseURL + p.clouds,
       loader = new THREE.TextureLoader();
 
   var mesh = new THREE.Mesh(
-    new THREE.SphereGeometry(p.radius + 0.005, 32, 32),
+    new THREE.SphereGeometry(p.radius * 1.01, 32, 32),
     new THREE.MeshPhongMaterial({
       map: loader.load(map),
       transparent: true

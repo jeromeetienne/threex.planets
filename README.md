@@ -82,12 +82,37 @@ updateFcts.push(function(delta, now){
 })
 ```
 
+new simpler form:
+
+```javascript
+var mesh = THREEx.Planets.create("Uranus"); // ring included
+scene.add(mesh);
+
+var mesh	= THREEx.Planets.create("Earth"); // clouds included
+scene.add(mesh);
+updateFcts.push(function(delta, now){
+	mesh.traverse(function(child) {
+    if (child.name.search("cloud") !== -1) child.rotation.y += 1/8 * delta;
+  });
+});
+
+var mesh	= THREEx.Planets.create("Earth", true);  // no clouds
+```
+
 ## API
 
 Here is the list of all the functions.
 They all return a ```THREE.Object3d```. 
 You can tune it to fit your need
 
+* ```THREEx.Planets.create(body, skipextras)``` return the mesh of any supported body  
+      body: Sun|Mercury|Venus|Earth|Moon|Mars|Vesta|Ceres|Jupiter|Saturn|Uranus|Neptune|Pluto  
+      skipextras: No ring, cloud, corona or other extra elements  
+* ```THREEx.Planets.createRings(body)```  return the ring mesh of any supported body  
+      body: Jupiter|Saturn|Uranus|Neptune  
+* ```THREEx.Planets.createClouds(body)``` return the cloud mesh of any supported body  
+      body: Earth|Mars  
+      
 * ```THREEx.Planets.createSun()``` return the mesh of the Sun
 * ```THREEx.Planets.createMercury()``` return the mesh of Mercury
 * ```THREEx.Planets.createVenus()``` return the mesh of Venus
