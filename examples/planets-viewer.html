@@ -29,26 +29,30 @@
 
   var light = new THREE.AmbientLight(0xffffff);
   scene.add(light);
-    
+  
+  // stellar background    
 	var starSphere	= THREEx.Planets.createStarfield()
 	scene.add(starSphere)
-    
-  var i = 0, radius = 8, step = Math.PI / Object.keys(THREEx.Planets.params).length, mult, theta = 0;
+  
+  // radius & ang. distance step of planet circle  
+  var radius = 8, step = Math.PI / Object.keys(THREEx.Planets.params).length, theta = 0;
   
   for (var p in THREEx.Planets.params) {
     if (!THREEx.Planets.params.hasOwnProperty(p)) continue;
     var mesh = THREEx.Planets.create(p);
     
     var x = Math.sin(theta) * radius, z = Math.cos(theta) * radius;
-    //var x = radius + i, z = 0;
     mesh.position.set(x, 0, z);
-    i++;
     scene.add(mesh);
+    // all meshes in array for later access
     meshes.push(mesh);
+    // rotation speed for each body
     rot.push(THREE.Math.degToRad(1/THREEx.Planets.params[p].rot));
+    // next angular position. Large bodies need more space
     theta = THREEx.Planets.params[p].radius >= 1 || THREEx.Planets.params[p].radius === 0.16 ? theta + 2.5 * step : theta + step;
   }
   theta = 0;
+  
   // handle window resize
   window.addEventListener('resize', function(){
     renderer.setSize( window.innerWidth, window.innerHeight )
@@ -59,16 +63,18 @@
   // render the scene
   onRenderFcts.push(function(){
     meshes.forEach( function(d, i) { 
+      // spin each planet one step and spin clouds a bit faster
       d.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[i]);
       d.traverse(function(child) {
         if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
       });
     });
+    // new camera position moves in a circle arond objects
     theta += 0.1;
-    camera.position.x = (radius + 4) * Math.sin( THREE.Math.degToRad( theta ) );
-    camera.position.z = (radius + 4) * Math.cos( THREE.Math.degToRad( theta ) );
+    camera.position.x = (radius + 4) * Math.sin(THREE.Math.degToRad(theta));
+    camera.position.z = (radius + 4) * Math.cos(THREE.Math.degToRad(theta));
 	  camera.lookAt( scene.position );    
-    //camera.updateMatrixWorld();
+
     renderer.render(scene, camera);  
   });
  

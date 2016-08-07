@@ -28,18 +28,24 @@
   var light = new THREE.AmbientLight(0xffffff);
   scene.add(light);
     
-	var starSphere	= THREEx.Planets.createStarfield()
+  // stellar background
+  var starSphere	= THREEx.Planets.createStarfield()
 	scene.add(starSphere)
 
-  var i = 0, radius = 2, theta = Math.PI * 1.5;
+  // radius & initial position of the moon "orbit"
+  var radius = 2, theta = Math.PI * 1.5;
   
+  // the Earth mesh
   earth = THREEx.Planets.create("Earth");
   scene.add(earth);
+  // rotation speed
   rot.push(THREE.Math.degToRad(1/THREEx.Planets.params.ter.rot));
-    
+  // the Moon mesh
   moon = THREEx.Planets.create("Moon");
+  // initial position
   moon.position.set(Math.sin(theta) * radius, 0, Math.cos(theta) * radius);
   scene.add(moon);
+  // rotaion/orbital speed
   rot.push(THREE.Math.degToRad(1/THREEx.Planets.params.lun.rot));
 
   // handle window resize
@@ -52,11 +58,14 @@
   
   // render the scene
   onRenderFcts.push(function(){
+    // turn the Earth 1 step
     earth.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[0]);
+    // spin the clouds a bit faster
     earth.traverse(function(child) {
       if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
     });
 
+    // turn the Moon and move it at same speed
     moon.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[1]);
     theta += rot[1];
     moon.position.set(Math.sin(theta) * radius, 0, Math.cos(theta) * radius);
