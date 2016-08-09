@@ -93,7 +93,7 @@ THREEx.Planets.create = function(body, skipextras) {
 
   if (p.hasOwnProperty("bump")) {
     arg.bumpMap = loader.load(THREEx.Planets.baseURL + p.bump);  
-    arg.bumpScale = 0.02;
+    arg.bumpScale = 0.005;
   }  
   if (p.hasOwnProperty("spec")) {
     arg.specularMap = loader.load(THREEx.Planets.baseURL + p.spec);  
@@ -103,7 +103,7 @@ THREEx.Planets.create = function(body, skipextras) {
   if (body === "sol") { //ommmmmmm
     var material = new THREE.MeshBasicMaterial(arg);
   } else {
-    var material = new THREE.MeshLambertMaterial(arg);
+    var material = new THREE.MeshPhongMaterial(arg);
   }
   var mesh = new THREE.Mesh(geometry, material);
   
