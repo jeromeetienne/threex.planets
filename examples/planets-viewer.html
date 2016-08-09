@@ -22,7 +22,7 @@
 
   // init scene and camera
   var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 1000);
+  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000);
   //camera.position.z = 8;
   camera.position.y = 1;
   var controls = new THREE.OrbitControls(camera)

@@ -70,7 +70,7 @@ THREEx.Planets.createStarfield = function() {
     map  : texture,
     side  : THREE.BackSide
   })
-  var geometry = new THREE.SphereGeometry(100, 32, 32)
+  var geometry = new THREE.SphereGeometry(1000, 32, 32)
   var mesh = new THREE.Mesh(geometry, material)
   return mesh  
 }
@@ -100,7 +100,11 @@ THREEx.Planets.create = function(body, skipextras) {
     arg.specular = new THREE.Color("#333");
   }
   
-  var material = new THREE.MeshPhongMaterial(arg);
+  if (body === "sol") { //ommmmmmm
+    var material = new THREE.MeshBasicMaterial(arg);
+  } else {
+    var material = new THREE.MeshLambertMaterial(arg);
+  }
   var mesh = new THREE.Mesh(geometry, material);
   
   if (!skipextras && p.hasOwnProperty("ring")) {
