@@ -35,10 +35,13 @@
 	scene.add(starSphere)
   
   // radius & ang. distance step of planet circle  
-  var radius = 8, step = Math.PI / Object.keys(THREEx.Planets.params).length, theta = 0;
+  var radius = 8, step = Math.PI * 1.5 / Object.keys(THREEx.Planets.params).length, theta = 0;
   
   for (var p in THREEx.Planets.params) {
     if (!THREEx.Planets.params.hasOwnProperty(p)) continue;
+    // next angular position. Large bodies need more space
+    theta = THREEx.Planets.params[p].radius >= 1 ? theta + 2.5 * step : theta + step;
+
     var mesh = THREEx.Planets.create(p);
     
     var x = Math.sin(theta) * radius, z = Math.cos(theta) * radius;
@@ -48,8 +51,7 @@
     meshes.push(mesh);
     // rotation speed for each body
     rot.push(THREE.Math.degToRad(1/THREEx.Planets.params[p].rot));
-    // next angular position. Large bodies need more space
-    theta = THREEx.Planets.params[p].radius >= 1 || THREEx.Planets.params[p].radius === 0.16 ? theta + 2.5 * step : theta + step;
+    if (THREEx.Planets.params[p].radius >= 1) theta += step;
   }
   theta = 0;
   

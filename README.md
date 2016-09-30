@@ -4,16 +4,19 @@ threex.planets.js
 It is a three.js extension to display planets
 based on the data from  
 * [planetpixelemporium](http://planetpixelemporium.com/planets.html) (Sun*, Earth DEM, Uranus)  
-* [USGS](http://astrogeology.usgs.gov/solar-system) (Mercury DEM, Moon*, Mars)
+* [USGS Astrogeology](http://astrogeology.usgs.gov/solar-system) (Mercury DEM, Moon*, Mars, Jupiter Moons, Uranus Moons)
 * [NASA/JHUAPL/Carnegie Institution of Washington](http://messenger.jhuapl.edu/Explore/Images.html#global-mosaics) (Mercury Map*)
-* [NASA/JHUAPL/SWRI](http://pluto.jhuapl.edu/Multimedia/Science-Photos/image.php?gallery_id=2&image_id=252) (Pluto*)
-* [NASA/JPL/Space Science Institute](http://photojournal.jpl.nasa.gov/catalog/PIA11142) (Saturn Rings*)
-* [NASA/JPL](http://voyager.jpl.nasa.gov/gallery/uranus.html) (Uranus Rings*)
+* [NASA/JHUAPL/SWRI](http://pluto.jhuapl.edu/Multimedia/Science-Photos/image.php?gallery_id=2&image_id=252) (Pluto*, Charon)
+* [NASA/JPL-Caltech/Space Science Institute](http://www.jpl.nasa.gov/spaceimages/searchwp.php?category=saturn) (Saturn Rings*, Titan, Triton*)
+* [NASA/JPL-Caltech/Space Science Institute/LPI](http://www.lpi.usra.edu/icy_moons/) (Saturn Icy Moons*)
+* [NASA/JPL-Caltech](http://voyager.jpl.nasa.gov/gallery/uranus.html) (Uranus Rings*)
 * [NASA/JPL-Caltech](http://maps.jpl.nasa.gov/) (Stars)
 * [NASA Visible Earth](http://visibleearth.nasa.gov/view_cat.php?categoryID=1484) (Earth, Earth Clouds*)
 * [ESO](http://www.eso.org/public/usa/images/eso0127a/) (Solar Corona*)
-* [Björn Jónsson](http://bjj.mmedia.is/data/planetary_maps.html) (Venus*, Saturn, Neptune)
+* [Björn Jónsson](http://bjj.mmedia.is/data/planetary_maps.html) (Venus*, Neptune)
 * [GSFC](http://svs.gsfc.nasa.gov/cgi-bin/details.cgi?aid=12021) (Jupiter)
+* [Solar System Scope](http://www.solarsystemscope.com/nexus/textures/planet_textures/) (Saturn, Titan Clouds)
+* [Philip Stooke](http://solarviews.com/cap/index/maps-cylindrical1.html) (Deimos, Proteus)
 \* Hand adapted by ofrohn, also Jupiter & Neptune ring maps
 
 Here is some demos to show off

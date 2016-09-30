@@ -4,9 +4,20 @@
   <script src='vendor/three.js/build/three.js'></script>
   <script src='vendor/three.js/examples/js/controls/OrbitControls.js'></script>
   <script src='../threex.planets.js'></script>
+  <script src='lib/util.js'></script>
+  <script src='lib/planetary.js'></script>
   <link rel="stylesheet" href="orrery.css">
 <body id="map" style='margin: 0px; overflow: hidden; text-align:center;'><script>
-
+ var luna = {
+    "name":"Moon",
+    "parent":"ter",
+    "map":"lun",
+    "trajectory":false,
+    "H":0.25,
+    "ref":"ecl",
+    "elements":[{"a":384400,"e":0.0554,"i":5.16,"M":135.27,"w":318.15,"N":125.08,"n":13.176358,"dw":6003.002,"dN":1935.484,"ep":"2000-01-01.5TT"}]
+  };
+  
   // init renderer
   var renderer = new THREE.WebGLRenderer({
    antialias : true
@@ -16,7 +27,7 @@
   document.body.appendChild( renderer.domElement );
 
   // array of functions for the rendering loop
-  var onRenderFcts= [], earth, moon, rot= [];
+  var onRenderFcts= [], earth, moon, rot= [], speed = 0.25;
 
   // init scene and camera
   var scene = new THREE.Scene();
@@ -25,7 +36,7 @@
   //camera.position.x = -1;
   var controls = new THREE.OrbitControls(camera)
 
-  var light = new THREE.AmbientLight(0x000033);
+  var light = new THREE.AmbientLight(0x333366);
   scene.add(light);
     
 	var light	= new THREE.DirectionalLight(0xffffff, 1);
@@ -37,8 +48,14 @@
 	scene.add(starSphere)
 
   // radius & initial position of the moon "orbit"
-  var radius = 4, theta = Math.PI * 1.5;
-
+  var radius = 1e-5;
+  //to scale
+  //var radius = 6.3e-5; 
+  //THREEx.Planets.params.lun.radius = 0.1;
+  
+  var dt = new Date();
+  var pos = transform(luna.elements[0], dt, luna.parent);
+  
   // the Earth mesh
   var sun = THREEx.Planets.create("Sun");
   sun.position.set(-100, 0, 0);
@@ -49,14 +66,15 @@
   earth = THREEx.Planets.create("Earth");
   scene.add(earth);
   // rotation speed
-  rot.push(THREE.Math.degToRad(1/THREEx.Planets.params.ter.rot));
+  rot.push(THREE.Math.degToRad(-15 * speed));
   // the Moon mesh
   moon = THREEx.Planets.create("Moon");
   // initial position
-  moon.position.set(Math.sin(theta) * radius, 0, Math.cos(theta) * radius);
+  moon.position.set(pos.x * radius, pos.z * radius, pos.y * radius);
+  moon.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), Math.PI);
   scene.add(moon);
   // rotaion/orbital speed
-  rot.push(THREE.Math.degToRad(1/THREEx.Planets.params.lun.rot));
+  rot.push(THREE.Math.degToRad(-0.549 * speed));
 
   // handle window resize
   window.addEventListener('resize', function(){
@@ -75,10 +93,13 @@
       if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
     });
 
+    dt = dateAdd(dt, speed, "h");
+    var pos = transform(luna.elements[0], dt, luna.parent);
+
     // turn the Moon and move it at same speed
     moon.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[1]);
-    theta += rot[1];
-    moon.position.set(Math.sin(theta) * radius, 0, Math.cos(theta) * radius);
+    //theta += rot[1];
+    moon.position.set(pos.x * radius, pos.z * radius, pos.y * radius);
 
     renderer.render(scene, camera);  
   });
