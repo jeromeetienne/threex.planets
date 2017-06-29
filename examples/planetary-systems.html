@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta charset="utf-8">
+  <title>Planetary Systems</title>
+  <script src='../lib/three.js'></script>
+  <script src='../lib/OrbitControls.js'></script>
+  <script src='../lib/threex.planets.js'></script>
+  <script src='../data/moons.js'></script>
+  <script src='../lib/planetary.js'></script>
+<body id="map" style='margin: 0px; overflow: hidden; text-align:center;'><script>
+  var cheats = {
+    "ter": {"scale": 1.6e-5, "distance": 12},
+    "mar": {"scale": 1.03e-4, "distance": 6},
+    "jup": {"scale": 1.678e-5, "distance": 28, "tilt": 0.02},
+    "sat": {"scale": 1.991e-5, "distance": 16, "tilt": -0.1},
+    "ura": {"scale": 3.913e-5, "distance": 16, "tilt": -0.21},
+    "nep": {"scale": 4.038e-5, "distance": 12},
+    "plu": {"scale": 3e-5, "distance": 6}
+  };
+  var planet = "ter";
+  // radius & initial position of the moon "orbit"
+  var radius = cheats[planet].scale,
+      speed = 0.05;
+
+  /*
+  for (var key in moons) {
+     var e = moons[key].elements[0];
+     if (e.ref !== "lpl") continue;
+     var pole = {l:e.RA * deg2rad, b:e.Dec * deg2rad};
+     var pos = euler(pole, [-Math.PI / 2, 23.4393 * deg2rad, Math.PI / 2]);
+     document.write(key + " |" + Round(pos[0] / deg2rad, 4) + "|" + Round(pos[1] / deg2rad, 4)  + "/ ");
+  }
+  */
+  // init renderer
+  var renderer = new THREE.WebGLRenderer({
+   antialias : true
+  });
+  renderer.setClearColor("#000");
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
+
+  // array of functions for the rendering loop
+  var onRenderFcts= [], parent, satellites = [], rot = [], elements = [];
+
+  // init scene and camera
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000);
+  camera.position.z = cheats[planet].distance;
+  //camera.position.x = -1;
+  var controls = new THREE.OrbitControls(camera);
+
+  var light = new THREE.AmbientLight(0x333344);
+  scene.add(light);
+    
+	var light	= new THREE.PointLight(0xffffff, 1);
+	light.position.set(-100, 0, 0);
+	scene.add(light);
+
+  // stellar background
+  var starSphere	= THREEx.Planets.createStarfield();
+	scene.add(starSphere);
+  
+  var dt = new Date();
+  
+  // the Earth mesh
+  var sun = THREEx.Planets.create("Sun");
+  sun.position.set(-100, 0, 0);
+
+  scene.add(sun);
+  
+  // the planet mesh
+  parent = THREEx.Planets.create(planet);
+  scene.add(parent);
+  // rotation speed
+  var period = THREEx.Planets.params[planet].rot * 24;
+  rot.push(THREE.Math.degToRad(360 / period * -speed));
+  // the moon meshes
+  for (var key in moons) {
+    if (!has(moons, key)) continue;
+    if (moons[key].parent !== planet) continue;
+    
+    var moon = THREEx.Planets.create(key);
+    if (!moon) moon = new THREE.Mesh(new THREE.SphereGeometry(0.02, 32, 32), new THREE.MeshPhongMaterial({color: "#fff"})); 
+    else moon.rotateY(THREE.Math.degToRad(180));
+
+    var e = moons[key].elements[0];
+    elements.push(e);
+    var pos = transform(e, dt, planet);
+    //    v = new THREE.Vector3( pos.x, pos.z, pos.y );
+    /*if (pos.ref !== "ecl") {
+      a = new THREE.Euler( Math.Pi/2 - pos.becl, pos.lecl, 0, 'XYZ' );
+      v.applyEuler(a);  
+    }*/
+    
+    // initial position
+    moon.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
+    moon.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), Math.PI);
+    scene.add(moon);
+    satellites.push(moon); 
+
+    // rotaion/orbital speed
+    if (THREEx.Planets.params.hasOwnProperty(key)) {
+      period = THREEx.Planets.params[key].rot * 24;
+      rot.push(THREE.Math.degToRad(360 / period * -speed));
+    } else rot.push(0);
+  }
+  // handle window resize
+  window.addEventListener('resize', function(){
+    renderer.setSize( window.innerWidth, window.innerHeight )
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()  
+  }, false);
+
+  
+  // render the scene
+  onRenderFcts.push(function(){
+    // turn the planet 1 step
+    parent.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[0]);
+    // spin the clouds a bit faster
+    //earth.traverse(function(child) {
+    //  if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
+    //});
+
+    
+    dt = dateAdd(dt, speed, "h");
+    satellites.forEach( function(d, i) {
+      var pos = transform(elements[i], dt, planet);
+      //var pos1 = euler([pos.l, pos.b], [90.0, -23.4393, -90.0]);
+      //pos = Trig.cartesian([pos1[0], pos1[1], pos.r]);
+      // turn the moon and move it at same speed
+      d.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[i + 1]);
+      d.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
+    });    
+    renderer.render(scene, camera);  
+  });
+  
+  // run the rendering loop
+  var lastTimeMsec= null;
+  requestAnimationFrame(function animate(nowMsec) {
+    // keep looping
+    requestAnimationFrame(animate);
+    // measure time
+    lastTimeMsec = lastTimeMsec || nowMsec-1000/60;
+    var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+    lastTimeMsec = nowMsec;
+    // call each update function
+    onRenderFcts.forEach(function(onRenderFct) {
+      onRenderFct(deltaMsec/1000, nowMsec/1000);
+    })
+  })
+ 
+
+</script></body>
