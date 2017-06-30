@@ -7,30 +7,25 @@
   <script src='../lib/threex.planets.js'></script>
   <script src='../data/moons.js'></script>
   <script src='../lib/planetary.js'></script>
+  <style type="text/css">
+    #select { position:absolute; top:0; left:0; }
+    #select div { display: inline-block; cursor:pointer; margin:4px 4px 0; padding:2px; min-width:60px; color:#0f0; border:1px solid #0c0; border-radius: 6px; }
+    #select div:hover { background: rgba(0,255,0,0.2) }
+  </style>
 <body id="map" style='margin: 0px; overflow: hidden; text-align:center;'><script>
   var cheats = {
     "ter": {"scale": 1.6e-5, "distance": 12},
     "mar": {"scale": 1.03e-4, "distance": 6},
-    "jup": {"scale": 1.678e-5, "distance": 28, "tilt": 0.02},
-    "sat": {"scale": 1.991e-5, "distance": 16, "tilt": -0.1},
-    "ura": {"scale": 3.913e-5, "distance": 16, "tilt": -0.21},
+    "jup": {"scale": 1.678e-5, "distance": 28},
+    "sat": {"scale": 1.991e-5, "distance": 16},
+    "ura": {"scale": 3.913e-5, "distance": 16},
     "nep": {"scale": 4.038e-5, "distance": 12},
     "plu": {"scale": 3e-5, "distance": 6}
   };
-  var planet = "ter";
+  var planet = "sat";
   // radius & initial position of the moon "orbit"
-  var radius = cheats[planet].scale,
-      speed = 0.05;
+  var radius, speed = 0.05;
 
-  /*
-  for (var key in moons) {
-     var e = moons[key].elements[0];
-     if (e.ref !== "lpl") continue;
-     var pole = {l:e.RA * deg2rad, b:e.Dec * deg2rad};
-     var pos = euler(pole, [-Math.PI / 2, 23.4393 * deg2rad, Math.PI / 2]);
-     document.write(key + " |" + Round(pos[0] / deg2rad, 4) + "|" + Round(pos[1] / deg2rad, 4)  + "/ ");
-  }
-  */
   // init renderer
   var renderer = new THREE.WebGLRenderer({
    antialias : true
@@ -38,14 +33,14 @@
   renderer.setClearColor("#000");
   renderer.setSize( window.innerWidth, window.innerHeight );
   document.body.appendChild( renderer.domElement );
-
+ 
+  select();
   // array of functions for the rendering loop
-  var onRenderFcts= [], parent, satellites = [], rot = [], elements = [];
+  var onRenderFcts = [], parentPlanet, satellites = [], rot = [], elements = [];
 
   // init scene and camera
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000);
-  camera.position.z = cheats[planet].distance;
   //camera.position.x = -1;
   var controls = new THREE.OrbitControls(camera);
 
@@ -67,43 +62,71 @@
   sun.position.set(-100, 0, 0);
 
   scene.add(sun);
+
+  addPlanet(planet);
   
-  // the planet mesh
-  parent = THREEx.Planets.create(planet);
-  scene.add(parent);
-  // rotation speed
-  var period = THREEx.Planets.params[planet].rot * 24;
-  rot.push(THREE.Math.degToRad(360 / period * -speed));
-  // the moon meshes
-  for (var key in moons) {
-    if (!has(moons, key)) continue;
-    if (moons[key].parent !== planet) continue;
-    
-    var moon = THREEx.Planets.create(key);
-    if (!moon) moon = new THREE.Mesh(new THREE.SphereGeometry(0.02, 32, 32), new THREE.MeshPhongMaterial({color: "#fff"})); 
-    else moon.rotateY(THREE.Math.degToRad(180));
+  function addPlanet(planet) {
+    if (parentPlanet) { //reset
+      satellites.forEach( function(d, i) {  
+        scene.remove(d); 
+      });
+      scene.remove(parentPlanet);
+      rot = []; satellites = []; elements = [];
+      onRenderFcts = [];
+    }
+    radius = cheats[planet].scale;
+    camera.position.z = cheats[planet].distance;
+    // the planet mesh
+    parentPlanet = THREEx.Planets.create(planet);
+    scene.add(parentPlanet);
+    // rotation speed
+    var period = THREEx.Planets.params[planet].rot * 24;
+    rot.push(THREE.Math.degToRad(360 / period * -speed));
+    // the moon meshes
+    for (var key in moons) {
+      if (!has(moons, key)) continue;
+      if (moons[key].parent !== planet) continue;
+      
+      var moon = THREEx.Planets.create(key);
+      if (!moon) moon = new THREE.Mesh(new THREE.SphereGeometry(0.02, 32, 32), new THREE.MeshPhongMaterial({color: "#fff"})); 
+      else moon.rotateY(THREE.Math.degToRad(180));
 
-    var e = moons[key].elements[0];
-    elements.push(e);
-    var pos = transform(e, dt, planet);
-    //    v = new THREE.Vector3( pos.x, pos.z, pos.y );
-    /*if (pos.ref !== "ecl") {
-      a = new THREE.Euler( Math.Pi/2 - pos.becl, pos.lecl, 0, 'XYZ' );
-      v.applyEuler(a);  
-    }*/
-    
-    // initial position
-    moon.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
-    moon.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), Math.PI);
-    scene.add(moon);
-    satellites.push(moon); 
+      var e = moons[key].elements[0];
+      elements.push(e);
+      var pos = transform(e, dt, planet);
+      
+      // initial position
+      moon.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
+      moon.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), Math.PI);
+      scene.add(moon);
+      satellites.push(moon); 
 
-    // rotaion/orbital speed
-    if (THREEx.Planets.params.hasOwnProperty(key)) {
-      period = THREEx.Planets.params[key].rot * 24;
-      rot.push(THREE.Math.degToRad(360 / period * -speed));
-    } else rot.push(0);
+      // rotaion/orbital speed
+      if (THREEx.Planets.params.hasOwnProperty(key)) {
+        period = THREEx.Planets.params[key].rot * 24;
+        rot.push(THREE.Math.degToRad(360 / period * -speed));
+      } else rot.push(0);
+    }
+    // render the scene
+    onRenderFcts.push(function(){
+      // turn the planet 1 step
+      parentPlanet.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[0]);
+      // spin the clouds a bit faster
+      if (planet === "ter" || planet === "mar") {
+        parentPlanet.traverse(function(child) {
+          if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
+        });
+      };        
+      dt = dateAdd(dt, speed, "h");
+      satellites.forEach( function(d, i) {
+        var pos = transform(elements[i], dt, planet);
+        d.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[i + 1]);
+        d.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
+      });    
+      renderer.render(scene, camera);  
+    });
   }
+  
   // handle window resize
   window.addEventListener('resize', function(){
     renderer.setSize( window.innerWidth, window.innerHeight )
@@ -112,27 +135,6 @@
   }, false);
 
   
-  // render the scene
-  onRenderFcts.push(function(){
-    // turn the planet 1 step
-    parent.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[0]);
-    // spin the clouds a bit faster
-    //earth.traverse(function(child) {
-    //  if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
-    //});
-
-    
-    dt = dateAdd(dt, speed, "h");
-    satellites.forEach( function(d, i) {
-      var pos = transform(elements[i], dt, planet);
-      //var pos1 = euler([pos.l, pos.b], [90.0, -23.4393, -90.0]);
-      //pos = Trig.cartesian([pos1[0], pos1[1], pos.r]);
-      // turn the moon and move it at same speed
-      d.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[i + 1]);
-      d.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
-    });    
-    renderer.render(scene, camera);  
-  });
   
   // run the rendering loop
   var lastTimeMsec= null;
@@ -149,5 +151,26 @@
     })
   })
  
-
+  function select() {
+    var div = document.createElement("div");
+    div.id = "select";
+    div.appendChild(document.createTextNode("Select planet: "));
+    for (var key in cheats) {
+      var btn = document.createElement("div");
+      btn.id = key;
+      btn.innerHTML = getName(key);
+      btn.onclick = function() {
+        planet = this.id;
+        addPlanet(planet);
+      }       
+      div.appendChild(btn);
+    }
+    document.body.appendChild(div);
+  }
+  
+  function getName(s) {
+    for (var key in substitutes) {
+      if (substitutes[key] === s) return key;
+    }
+  }
 </script></body>
