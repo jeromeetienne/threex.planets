@@ -21,13 +21,13 @@ based on the data from
 
 Here is some demos to show off
 
-* [planetary systems](http://ofrohn.github.io/planetary-systems.html)
+* [planetary systems](http://ofrohn.github.io/threex-planets-demo/planetary-systems.html)
 and its 
 [source](https://github.com/ofrohn/threex.planets/blob/master/examples/planetary-systems.html). Simulation of planets with their moons.  
-* [all the planets](http://ofrohn.github.io/planets.html)
+* [all the planets](http://ofrohn.github.io/threex-planets-demo/planets.html)
 and its 
 [source](https://github.com/ofrohn/threex.planets/blob/master/examples/planets.html). All the implemented objects dancing in a circle.  
-* [earth and moon](http://ofrohn.github.io/eartmoon.html)
+* [earth and moon](http://ofrohn.github.io/threex-planets-demo/eartmoon.html)
 and its 
 [source](https://github.com/ofrohn/threex.planets/blob/master/examples/earthmoon.html). The Earth spinning and the Moon orbiting it.  
 _Older examples_  
