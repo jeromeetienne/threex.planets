@@ -11,15 +11,16 @@
     #select { position:absolute; top:0; left:0; color:#0f0; }
     #select div { display: inline-block; cursor:pointer; margin:4px 4px 0; padding:2px; min-width:60px; color:#0f0; border:1px solid #0c0; border-radius: 6px; }
     #select div:hover { background: rgba(0,255,0,0.2) }
+    .name { position: absolute; color: #fff; width:100px; height:100px; z-index:1; }
   </style>
 <body id="map" style='margin: 0px; overflow: hidden; text-align:center;'><script>
   var cheats = {
     "ter": {"scale": 1.6e-5, "distance": 12, "a": 1},
     "mar": {"scale": 1.03e-4, "distance": 6, "a": 1.5},
-    "jup": {"scale": 1.678e-5, "distance": 28, "a": 5.2},
-    "sat": {"scale": 1.991e-5, "distance": 16, "a": 9.5},
-    "ura": {"scale": 3.913e-5, "distance": 16, "a": 19},
-    "nep": {"scale": 4.038e-5, "distance": 12, "a": 30},
+    "jup": {"scale": 1.35e-5, "distance": 28, "a": 5.2},
+    "sat": {"scale": 1.837e-5, "distance": 18, "a": 9.5},
+    "ura": {"scale": 3.85e-5, "distance": 16, "a": 19},
+    "nep": {"scale": 3.76e-5, "distance": 12, "a": 30},
     "plu": {"scale": 3e-5, "distance": 6, "a": 39}
   };
   var groups = {
@@ -40,16 +41,16 @@
     "Outer Large": "#ff0",
     "Norse": "#0f0",
     "Gallic": "#0c0",
-    "Inuit": "#09",
+    "Inuit": "#09f",
     "Large": "#f60",
     "Irregular (R)": "#66f",
     "Irregular (P)": "#0f0",
     "Regular": "#f00"
   }
-
+  var font = "6pt Arial";
   var planet = "sat", showTracks = true;
-  // animation scale speed
-  var radius, speed = 0.05;
+  // animation scale, rel. speed
+  var radius, speed = 20;
 
   // init renderer
   var renderer = new THREE.WebGLRenderer({
@@ -61,7 +62,7 @@
  
   select();
   // array of functions for the rendering loop
-  var onRenderFcts = [], parentBody, satellites = [], tracks = [], rot = [], elements = [];
+  var onRenderFcts = [], parentBody, satellites = [], labels = [], tracks = [], rot = [], elements = [];
 
   // init scene and camera
   var scene = new THREE.Scene();
@@ -108,7 +109,7 @@
     scene.add(parentBody);
     // rotation speed
     var period = THREEx.Planets.params[planet].rot * 24;
-    rot.push(THREE.Math.degToRad(360 / period * -speed));
+    rot.push(THREE.Math.degToRad(360 / period / -speed));
     // the moon meshes
     for (var key in moons) {
       if (!has(moons, key)) continue;
@@ -131,24 +132,15 @@
       // rotaion/orbital speed
       if (THREEx.Planets.params.hasOwnProperty(key)) {
         period = THREEx.Planets.params[key].rot * 24;
-        rot.push(THREE.Math.degToRad(360 / period * -speed));
+        rot.push(THREE.Math.degToRad(360 / period / -speed));
       } else rot.push(0);
       
-      var gr = moons[key].group;
-      var col = gr !== "" && groups.hasOwnProperty(gr) ? groups[gr] : "#fff";
-      var track = getOrbit(dt, e, planet);
-      var mat = new THREE.LineBasicMaterial({
-        color: new THREE.Color(col),
-        //vertexColors: THREE.VertexColors,
-        transparent: true,
-        opacity: showTracks ? 0.3 : 0,
-        fog: true
-      });
-
-      var line = new THREE.Line(track, mat);
-      tracks.push(line);
-      scene.add(line);
+      var track = getOrbit(dt, e, moons[key].group, planet);
+      tracks.push(track);
+      scene.add(track);
  
+      //var lbl = createLabel(moons[key].name, pos.tx * radius, pos.tz * radius, pos.ty * radius);
+      //labels.push(lbl);
     }
     // render the scene
     onRenderFcts.push(function(){
@@ -160,11 +152,12 @@
           if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
         });
       };        
-      dt = dateAdd(dt, speed, "h");
+      dt = dateAdd(dt, 1/speed, "h");
       satellites.forEach( function(d, i) {
         var pos = transform(elements[i], dt, planet);
         d.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[i + 1]);
         d.position.set(pos.tx * radius, pos.tz * radius, pos.ty * radius);
+        //setLabelPos(labels[i], pos.tx * radius, pos.tz * radius, pos.ty * radius);
       });    
       renderer.render(scene, camera);  
     });
@@ -214,7 +207,7 @@
     chk.checked = showTracks === true;
     chk.onclick = function() {
       showTracks = this.checked;
-      tracks.forEach( function(d, i) { d.material.opacity = showTracks ? 0.25 : 0; });
+      tracks.forEach( function(d, i) { d.material.opacity = showTracks ? 0.4 : 0; });
       
       //addPlanet(planet);
     }
@@ -228,9 +221,10 @@
     }
   }
 
-  function getOrbit(dt, e, planet) {  
+  function getOrbit(dt, e, group, planet) {  
     var col, p, p0 = transform(e, dt, planet),
-        geo = new THREE.Geometry();
+        geo = new THREE.Geometry(),
+        col = group !== "" && groups.hasOwnProperty(group) ? groups[group] : "#fff";
     
     var period = p0.P,
         end = dateAdd(dt, period, "y"),
@@ -246,7 +240,56 @@
       current = dateAdd(current, step);
     }
     
-    return geo;
+    var mat = new THREE.LineBasicMaterial({
+      color: new THREE.Color(col),
+      //vertexColors: THREE.VertexColors,
+      transparent: true,
+      opacity: showTracks ? 0.4 : 0,
+      fog: true
+    });
+
+    var line = new THREE.Line(geo, mat);
+    return line;
   };
 
+  function createLabel(text, x, y, z) {
+    var margin = 2,
+        cnv = document.createElement("canvas"),
+        ctx = cnv.getContext("2d");
+        
+    ctx.font = font;
+    cnv.width = ctx.measureText(text).width + margin;
+    cnv.height = cnv.width;
+    ctx = cnv.getContext("2d");
+    ctx.font = font;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = "#fff";
+    ctx.fillText(text, margin, margin);
+    // ctx.strokeStyle = "black";
+    // ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    var texture = new THREE.CanvasTexture(cnv);
+    //texture.needsUpdate = true;
+    var material = new THREE.MeshBasicMaterial({
+      map: texture,
+      side: THREE.DoubleSide,
+      transparent: true
+    });
+    var mesh = new THREE.Mesh(new THREE.PlaneGeometry(cnv.width, cnv.height), material);
+    // mesh.overdraw = true;
+    //mesh.doubleSided = true;
+    mesh.rotateOnAxis( new THREE.Vector3( 0, 0, 1 ), 75);
+    //setLabelPos(mesh, x, y, z);
+    scene.add(mesh);
+    return mesh;
+  }  
+  function setLabelPos(d, x, y, z) {
+    var pos = new THREE.Vector3(x, y, z);
+    pos.project(camera); 
+    var w = window.innerWidth / 2, 
+        h = window.innerHeight / 2;
+    d.x = px(pos.x * w + w); 
+    d.y = px(pos.y * h + h); 
+    d.z = 10;
+  }
 </script></body>
