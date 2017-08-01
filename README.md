@@ -16,7 +16,7 @@ based on the data from
 * [Björn Jónsson](http://bjj.mmedia.is/data/planetary_maps.html) (Venus*, Neptune)
 * [GSFC](http://svs.gsfc.nasa.gov/cgi-bin/details.cgi?aid=12021) (Jupiter)
 * [Solar System Scope](http://www.solarsystemscope.com/nexus/textures/planet_textures/) (Saturn, Titan Clouds)
-* [Philip Stooke](http://solarviews.com/cap/index/maps-cylindrical1.html) (Deimos, Proteus)
+* [Philip Stooke](http://solarviews.com/cap/index/maps-cylindrical1.html) (Deimos, Proteus)  
 \* Hand adapted by ofrohn, also Jupiter & Neptune ring maps
 
 Here is some demos to show off
