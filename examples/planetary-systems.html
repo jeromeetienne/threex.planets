@@ -76,6 +76,7 @@
 	var light	= new THREE.PointLight(0xffffff, 1);
 	light.position.set(-1000, 0, 0);
 	scene.add(light);
+  THREEx.Planets.baseURL = "../images/";
 
   // stellar background
   var starSphere	= THREEx.Planets.createStarfield();
