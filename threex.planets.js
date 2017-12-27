@@ -2,7 +2,7 @@ var THREEx = THREEx || {};
 
 THREEx.Planets = {};
 
-THREEx.Planets.baseURL = "../images/";
+THREEx.Planets.baseURL = "../images/maps/";
 // Proportional scaling of planetary spheres
 THREEx.Planets.scale = 1.0;
 
