@@ -13,8 +13,7 @@ based on the data from
 * [NASA/JPL-Caltech](http://maps.jpl.nasa.gov/) (Stars)
 * [NASA Visible Earth](http://visibleearth.nasa.gov/view_cat.php?categoryID=1484) (Earth, Earth Clouds*)
 * [ESO](http://www.eso.org/public/usa/images/eso0127a/) (Solar Corona*)
-* [Björn Jónsson](http://bjj.mmedia.is/data/planetary_maps.html) (Venus*, Neptune)
-* [GSFC](http://svs.gsfc.nasa.gov/cgi-bin/details.cgi?aid=12021) (Jupiter)
+* [Björn Jónsson](http://bjj.mmedia.is/data/planetary_maps.html) (Venus*, Jupiter, Neptune)
 * [Solar System Scope](http://www.solarsystemscope.com/nexus/textures/planet_textures/) (Saturn, Titan Clouds)
 * [Philip Stooke](http://solarviews.com/cap/index/maps-cylindrical1.html) (Deimos, Proteus)  
 \* Hand adapted by ofrohn, also Jupiter & Neptune ring maps
