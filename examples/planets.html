@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+  <meta charset="utf-8">
+  <script src='../lib/three.js'></script>
+  <script src='../lib/OrbitControls.js'></script>
+  <script src='../lib/threex.planets.js'></script>
+<body style='margin: 0px; overflow: hidden; text-align:center;'><script>
+ //////////////////////////////////////////////////////////////////////////////////
+ //  Init
+ //////////////////////////////////////////////////////////////////////////////////
+
+  // init renderer
+  var renderer = new THREE.WebGLRenderer({
+   antialias : true
+  });
+  renderer.setClearColor("#000");
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
+
+  // array of functions for the rendering loop
+  var onRenderFcts= [], meshes = [], rot= [];
+
+  // init scene and camera
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.01, 10000);
+  //camera.position.z = 8;
+  camera.position.y = 1;
+  var controls = new THREE.OrbitControls(camera)
+
+  var light = new THREE.AmbientLight(0xffffff);
+  scene.add(light);
+  
+  // stellar background    
+	var starSphere	= THREEx.Planets.createStarfield()
+	scene.add(starSphere)
+  
+  // radius & ang. distance step of planet circle  
+  var radius = 8, step = Math.PI * 1.5 / Object.keys(THREEx.Planets.params).length, theta = 0;
+  
+  for (var p in THREEx.Planets.params) {
+    if (!THREEx.Planets.params.hasOwnProperty(p)) continue;
+    // next angular position. Large bodies need more space
+    theta = THREEx.Planets.params[p].radius >= 1 ? theta + 2.5 * step : theta + step;
+
+    var mesh = THREEx.Planets.create(p);
+    
+    var x = Math.sin(theta) * radius, z = Math.cos(theta) * radius;
+    mesh.position.set(x, 0, z);
+    scene.add(mesh);
+    // all meshes in array for later access
+    meshes.push(mesh);
+    // rotation speed for each body
+    rot.push(THREE.Math.degToRad(1/THREEx.Planets.params[p].rot));
+    if (THREEx.Planets.params[p].radius >= 1) theta += step;
+  }
+  theta = 0;
+  
+  // handle window resize
+  window.addEventListener('resize', function(){
+    renderer.setSize( window.innerWidth, window.innerHeight )
+    camera.aspect = window.innerWidth / window.innerHeight
+    camera.updateProjectionMatrix()  
+  }, false);
+
+  // render the scene
+  onRenderFcts.push(function(){
+    meshes.forEach( function(d, i) { 
+      // spin each planet one step and spin clouds a bit faster
+      d.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), rot[i]);
+      d.traverse(function(child) {
+        if (child.name.search("cloud") !== -1) child.rotateOnAxis( new THREE.Vector3( 0, 1, 0 ), 0.005);
+      });
+    });
+    // new camera position moves in a circle arond objects
+    theta += 0.1;
+    camera.position.x = (radius + 4) * Math.sin(THREE.Math.degToRad(theta));
+    camera.position.z = (radius + 4) * Math.cos(THREE.Math.degToRad(theta));
+	  camera.lookAt( scene.position );    
+
+    renderer.render(scene, camera);  
+  });
+ 
+  // run the rendering loop
+  var lastTimeMsec= null;
+  requestAnimationFrame(function animate(nowMsec) {
+    // keep looping
+    requestAnimationFrame(animate);
+    // measure time
+    lastTimeMsec = lastTimeMsec || nowMsec-1000/60;
+    var deltaMsec = Math.min(200, nowMsec - lastTimeMsec);
+    lastTimeMsec = nowMsec;
+    // call each update function
+    onRenderFcts.forEach(function(onRenderFct) {
+      onRenderFct(deltaMsec/1000, nowMsec/1000);
+    })
+  })
+ 
+ 
+</script></body>
